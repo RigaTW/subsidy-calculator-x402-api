@@ -1,0 +1,16 @@
+# Render Blueprint — 台灣托育補助試算 x402 API
+# 用法：把 subsidy-api/ 推到一個 Git repo，在 Render 選 New > Blueprint，
+# 選那個 repo 就好，不用手動填 Start Command。
+# 免費試用照常（每錢包 10 次）；要收 Base 主網 USDC 時，到 Render
+# Dashboard 補 CDP_API_KEY_ID + CDP_API_KEY_SECRET（不要寫進 repo、
+# 不要貼在聊天室）。沒設這兩個時，付費驗證會失敗（回 502），絕不會
+# 免費給資料。
+services:
+  - type: web
+    name: subsidy-calculator-x402-api
+    env: node
+    plan: free
+    startCommand: node server.js
+    envVars:
+      - key: FACILITATOR_URL
+        value: https://api.cdp.coinbase.com/platform/v2/x402
