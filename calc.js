@@ -1,5 +1,5 @@
 // 台灣托育補助試算 — 純計算邏輯（無 HTTP、無付款邏輯）
-// 資料來源：subsidy-rules-data.json（規則版本 2026-11-10，依據
+// 資料來源：subsidy-rules-data.json（規則版本 2026-11-11，依據
 // childcare-subsidy-rules.md）。規則表或草稿沒寫的金額，一律回
 // 「未確認」或「未支援」，絕不猜數字。
 //
@@ -318,10 +318,11 @@ function calcMonthly(p, today) {
     return { items, total: null, self_pay: null, capped_by_actual_fee: null, notes, unconfirmed, notEligible, alternatives, monthly: null };
   }
   if (age >= 24 && !RULES.extension_confirmed[city]) {
-    // 第 12 項部分確認：這四市的 2–3 歲延長程序未確認，不得推定與中央相同。
+    // 第 12 項已於 2026-11-11 全數確認：七市延長程序皆依中央第 21 點。
+    // 此分支現為防禦性保留——若日後某市規則改變、extension_confirmed 改回 false，才再回「未確認」。
     unconfirmed.push({
       name: '托育補助（2–3 歲延長）',
-      reason: `${city}的 2–3 歲延長程序未確認（未找到官方明文），不得推定與中央相同，請洽縣市社會局。中央規則：滿 2 歲未滿 3 歲續留原公共化或準公共合作對象者延長至滿 3 歲生日前一日，總額不變。`,
+      reason: `${city}的 2–3 歲延長程序未確認，不得推定與中央相同，請洽縣市社會局。中央規則：滿 2 歲未滿 3 歲續留原公共化或準公共合作對象者延長至滿 3 歲生日前一日，總額不變。`,
     });
     return { items, total: null, self_pay: null, capped_by_actual_fee: null, notes, unconfirmed, notEligible, alternatives, monthly: null };
   }

@@ -15,6 +15,8 @@ CDP live test script: `/tmp/test-cdp-live.js`.
 
 Patch re-test 2026-11-10 (`/tmp/test-patch.js`, 11/11 pass): Taipei quasi 2nd child now caps at 10,000 (fee 20000→20000/0, fee 25000→24000/1000, no fee→24000 cap/null), 3rd child 25000→25000/0, spec examples 1–2 unchanged, 2–3yo Taipei still unconfirmed, invalid 400, unsupported city, trials 10×200 then 402.
 
+Extension patch re-test 2026-11-11 (`/tmp/test-extension-patch.js` + local server port 3121): rules_version 2026-11-11, `extension_confirmed` all seven cities true (item 12 fully confirmed, central rule §21 nationwide; Taipei via 109-year notice + Q6, Kaohsiung via city Social Affairs Bureau page, Tainan/Hsinchu via central rule only). 30-month quasi_center 1st child, no fee: Taipei 21000 (13000+8000), Tainan 13000, Kaohsiung 15500 (13000+2500), Hsinchu 14500 (13000+1500), all `unconfirmed: []`; controls unchanged (Taoyuan 17500, New Taipei public 7000, Taipei 18-month spec example 20000/0). After testing, `data/trials.json` was reset to `{"counts": {}}`. Not deployed — live Render service still runs the pre-patch version until the user approves deployment.
+
 ## 1. Health / root — PASS
 
 ```
@@ -49,7 +51,7 @@ birth_subsidy: 新竹市生育津貼 30000（一次性，現行每胎 30,000 元
 | age_months | 條件 | 結果 |
 |---|---|---|
 | 24 | 新北市、準公共托嬰中心 | 13000 + 新北聯盟 3000 = 16000（延長已確認） |
-| 24 | 台北市、準公共托嬰中心 | `monthly: null`，`unconfirmed`：2–3 歲延長程序未確認 |
+| 24 | 台北市、準公共托嬰中心 | 13000 + 台北加碼 8000 = 21000（延長已確認，2026-11-11 補丁） |
 | 36 | 台北市、自己帶 | 育兒津貼 5000（無台北加碼） |
 | 36 | 台北市、準公共托嬰中心 | `monthly: null`，`not_eligible`：托育補助僅至未滿 3 歲 |
 | 60 | 台北市、自己帶 | `monthly: null`，`not_eligible`：已滿 5 歲，育兒津貼僅至未滿 5 歲 |
@@ -97,9 +99,9 @@ birth_subsidy: 新竹市生育津貼 30000（一次性，現行每胎 30,000 元
 - 台南市準公共托嬰中心第 1 名、`actual_fee=10000` → `total` 10000、`capped_by_actual_fee` 10000、`self_pay` 0。
 - 台南市準公共托嬰中心第 1 名、無 `actual_fee` → `total` 13000（無地方加碼）。
 
-## 9. 2–3 歲延長（四市未確認 vs 三市已確認）— PASS
+## 9. 2–3 歲延長（七市皆已確認，2026-11-11 補丁）— PASS
 
-- 30 個月、台北市／台南市／高雄市／新竹市、準公共托嬰中心 → 全部 `monthly: null`，`unconfirmed`：2–3 歲延長程序未確認。
+- 30 個月、台北市／台南市／高雄市／新竹市、準公共托嬰中心 → 台北 21000、台南 13000、高雄 15500、新竹 14500，`unconfirmed: []`（舊版：全部 `monthly: null`，2–3 歲延長程序未確認）。
 - 30 個月、桃園市準公共托嬰中心 → 17500。
 - 30 個月、台中市準公共托嬰中心（稅率 5）→ 14400。
 - 30 個月、新北市公共化 → 7000（延長已確認，公共化無聯盟加碼）。
